@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>   
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <link rel="stylesheet" href="CSS/common.css">
+    <style>
+        .profile-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .user-info {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .user-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #7cb342;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            margin: 0 auto 15px;
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .user-avatar:hover::after {
+            content: '更换头像';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        .avatar-input {
+            display: none;
+        }
+        .avatar-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 10px auto;
+            background-size: cover;
+            background-position: center;
+        }
+        .history-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+        .history-item img {
+            width: 120px;
+            height: 68px;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        .history-info {
+            flex: 1;
+        }
+        .history-info h5 {
+            margin: 0 0 5px;
+        }
+        .history-info p {
+            color: #666;
+            margin: 0;
+            font-size: 14px;
+        }
+        .logout-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
+        .no-history {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+        }
+        .profile-tabs {
+            margin: 20px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .profile-tabs button {
+            padding: 10px 20px;
+            margin-right: 10px;
+            border: none;
+            background: none;
+            color: #666;
+            cursor: pointer;
+        }
+        .profile-tabs button.active {
+            color: #7cb342;
+            border-bottom: 2px solid #7cb342;
+        }
+        .profile-section {
+            display: none;
+        }
+        .profile-section.active {
+            display: block;
+        }
+        .edit-profile-form {
+            max-width: 400px;
+            margin: 20px auto;
+        }
+        .edit-profile-form input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .btn-success {
+            background-color: #7cb342;
+            border-color: #7cb342;
+        }
+        .btn-success:hover {
+            background-color: #689f38;
+            border-color: #689f38;
+        }
+        .favorite-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+        .favorite-item img {
+            width: 120px;
+            height: 68px;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        .clear-history {
+            float: right;
+            color: #dc3545;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .no-favorites {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+        }
+    </style>
+    <title>个人中心</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">视频网站</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="ranking.html">排行</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="profile.html">我的</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="new.html">最新</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">联系我们</a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="搜索视频...">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="profile-container">
+            <div class="user-info">
+                <input type="file" id="avatarInput" class="avatar-input" accept="image/*">
+                <div class="user-avatar" id="userAvatar" onclick="document.getElementById('avatarInput').click()"></div>
+                <h3 id="username">加载中...</h3>
+                <button class="logout-btn" onclick="logout()">退出登录</button>
+            </div>
+            
+            <div class="profile-tabs">
+                <button onclick="showSection('history')" class="active">观看历史</button>
+                <button onclick="showSection('favorites')">我的收藏</button>
+                <button onclick="showSection('profile')">个人资料</button>
+            </div>
+
+            <div id="historySection" class="profile-section active">
+                <h4 class="mt-4 mb-3">
+                    观看历史
+                    <span class="clear-history" onclick="clearHistory()">清空历史</span>
+                </h4>
+                <div id="historyList">
+                    <!-- 历史记录将通过 JavaScript 动态添加 -->
+                </div>
+            </div>
+
+            <div id="favoritesSection" class="profile-section">
+                <h4 class="mt-4 mb-3">我的收藏</h4>
+                <div id="favoritesList">
+                    <!-- 收藏列表将通过 JavaScript 动态添加 -->
+                </div>
+            </div>
+
+            <div id="profileSection" class="profile-section">
+                <h4 class="mt-4 mb-3">编辑个人资料</h4>
+                <form class="edit-profile-form" id="editProfileForm">
+                    <div class="form-group">
+                        <label>用户名</label>
+                        <input type="text" id="editUsername" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>昵称</label>
+                        <input type="text" id="editNickname" placeholder="设置昵称">
+                    </div>
+                    <div class="form-group">
+                        <label>邮箱</label>
+                        <input type="email" id="editEmail" placeholder="设置邮箱">
+                    </div>
+                    <div class="form-group">
+                        <label>新密码</label>
+                        <input type="password" id="editPassword" placeholder="不修改请留空">
+                    </div>
+                    <button type="submit" class="btn btn-success">保存修改</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 添加头像处理函数
+        function handleAvatarUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageData = e.target.result;
+                    // 更新头像显示
+                    const userAvatar = document.getElementById('userAvatar');
+                    userAvatar.style.backgroundImage = `url(${imageData})`;
+                    userAvatar.textContent = ''; // 清除文字
+                    
+                    // 保存头像数据
+                    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                    const users = JSON.parse(localStorage.getItem('users') || '[]');
+                    const userIndex = users.findIndex(u => u.username === currentUser.username);
+                    
+                    if (userIndex !== -1) {
+                        users[userIndex].avatar = imageData;
+                        localStorage.setItem('users', JSON.stringify(users));
+                        currentUser.avatar = imageData;
+                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // 检查登录状态
+        function checkLogin() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // 获取用户完整信息
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.username === currentUser.username);
+            
+            // 显示用户信息（优先显示昵称）
+            const displayName = user?.nickname || currentUser.username;
+            document.getElementById('username').textContent = displayName;
+            
+            // 显示头像
+            const userAvatar = document.getElementById('userAvatar');
+            if (user?.avatar) {
+                userAvatar.style.backgroundImage = `url(${user.avatar})`;
+                userAvatar.textContent = ''; // 清除文字
+            } else {
+                userAvatar.style.backgroundImage = '';
+                userAvatar.textContent = displayName[0].toUpperCase();
+            }
+            
+            // 加载用户数据
+            loadUserData();
+            // 加载观看历史
+            loadHistory();
+            // 加载收藏列表
+            loadFavorites();
+        }
+
+        // 加载用户数据
+        function loadUserData() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.username === currentUser.username);
+            
+            if (user) {
+                document.getElementById('editUsername').value = user.username;
+                document.getElementById('editNickname').value = user.nickname || '';
+                document.getElementById('editEmail').value = user.email || '';
+            }
+        }
+
+        // 加载观看历史
+        function loadHistory() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const history = JSON.parse(localStorage.getItem(`history_${currentUser.username}`) || '[]');
+            const historyList = document.getElementById('historyList');
+            
+            if (history.length === 0) {
+                historyList.innerHTML = '<div class="no-history">暂无观看历史</div>';
+                return;
+            }
+            
+            historyList.innerHTML = history.map(item => `
+                <div class="history-item">
+                    <img src="${item.thumbnail || 'https://via.placeholder.com/120x68'}" alt="${item.title}">
+                    <div class="history-info">
+                        <h5>${item.title}</h5>
+                        <p>观看时间：${new Date(item.watchTime).toLocaleString()}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 加载收藏列表
+        function loadFavorites() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const favorites = JSON.parse(localStorage.getItem(`favorites_${currentUser.username}`) || '[]');
+            const favoritesList = document.getElementById('favoritesList');
+            
+            if (favorites.length === 0) {
+                favoritesList.innerHTML = '<div class="no-favorites">暂无收藏视频</div>';
+                return;
+            }
+            
+            favoritesList.innerHTML = favorites.map(item => `
+                <div class="favorite-item">
+                    <img src="${item.thumbnail || 'https://via.placeholder.com/120x68'}" alt="${item.title}">
+                    <div class="history-info">
+                        <h5>${item.title}</h5>
+                        <p>收藏时间：${new Date(item.favoriteTime).toLocaleString()}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 清空历史记录
+        function clearHistory() {
+            if (confirm('确定要清空观看历史吗？此操作不可恢复。')) {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                localStorage.removeItem(`history_${currentUser.username}`);
+                loadHistory();
+            }
+        }
+
+        // 切换页面区域
+        function showSection(sectionName) {
+            // 更新标签状态
+            document.querySelectorAll('.profile-tabs button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // 更新区域显示
+            document.querySelectorAll('.profile-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionName + 'Section').classList.add('active');
+        }
+
+        // 处理个人资料编辑
+        document.getElementById('editProfileForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const userIndex = users.findIndex(u => u.username === currentUser.username);
+            
+            if (userIndex !== -1) {
+                const newPassword = document.getElementById('editPassword').value;
+                const nickname = document.getElementById('editNickname').value;
+                const email = document.getElementById('editEmail').value;
+                
+                // 更新用户信息
+                users[userIndex] = {
+                    ...users[userIndex],
+                    nickname: nickname,
+                    email: email,
+                    ...(newPassword ? { password: newPassword } : {})
+                };
+                
+                // 更新 localStorage
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                // 更新当前显示的用户名和头像
+                const displayName = nickname || currentUser.username;
+                document.getElementById('username').textContent = displayName;
+                
+                // 更新当前用户信息
+                currentUser.nickname = nickname;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                
+                alert('个人资料已更新');
+            }
+        });
+
+        // 退出登录
+        function logout() {
+            if (confirm('确定要退出登录吗？')) {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            }
+        }
+
+        // 添加头像上传事件监听
+        document.getElementById('avatarInput').addEventListener('change', handleAvatarUpload);
+
+        // 页面加载时检查登录状态
+        window.onload = checkLogin;
+
+        function toggleFavorite(videoInfo) {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                alert('请先登录');
+                return;
+            }
+
+            const favoritesKey = `favorites_${currentUser.username}`;
+            const favorites = JSON.parse(localStorage.getItem(favoritesKey) || '[]');
+            
+            // 检查是否已收藏
+            const index = favorites.findIndex(f => f.videoId === videoInfo.videoId);
+            
+            if (index === -1) {
+                // 添加到收藏
+                favorites.unshift({
+                    ...videoInfo,
+                    favoriteTime: new Date().toISOString()
+                });
+                alert('已添加到收藏');
+            } else {
+                // 取消收藏
+                favorites.splice(index, 1);
+                alert('已取消收藏');
+            }
+            
+            localStorage.setItem(favoritesKey, JSON.stringify(favorites));
+        }
+    </script>
+</body>
+</html> 

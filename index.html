@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.2.1/jquery.min.js"></script>   
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="CSS/common.css">
+    <link rel="stylesheet" href="CSS/index.css">
+    <style>
+        .user-section {
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+        }
+        .navbar-collapse {
+            justify-content: flex-end; /* 所有内容靠右对齐 */
+        }
+        .navbar-nav {
+            margin-right: auto; /* 导航菜单靠左 */
+        }
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end; /* 右侧内容靠右对齐 */
+            margin-left: auto;
+        }
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #9ACD32;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: pointer;
+            background-size: cover;
+            background-position: center;
+            margin-right: 10px;
+        }
+        .user-menu {
+            display: flex;
+            align-items: center;
+            white-space: nowrap; /* 防止文字换行 */
+        }
+        .user-menu a {
+            color: #666;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        .user-menu a:hover {
+            background-color: #f0f0f0;
+            color: #9ACD32;
+        }
+        .user-menu .divider {
+            width: 1px;
+            height: 20px;
+            background-color: #ddd;
+            margin: 0 5px;
+        }
+        .not-logged-in {
+            display: none;
+        }
+        .logged-in {
+            display: none;
+        }
+        .form-inline {
+            margin-right: 20px; /* 搜索框和用户信息之间的间距 */
+        }
+    </style>
+    <title>主页</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">视频网站</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="ranking.html">排行</a>
+                        </li>
+                        <li class="nav-item not-logged-in">
+                            <a class="nav-link" href="login.html">登录</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="new.html">最新</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="contact.html">联系我们</a>
+                        </li>
+                    </ul>
+                    <div class="navbar-right">
+                        <form class="form-inline my-2 my-lg-0">
+                            <input class="form-control mr-sm-2" type="search" placeholder="搜索视频..." aria-label="Search">
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
+                        </form>
+                        <!-- 用户头像和菜单 -->
+                        <div class="user-section logged-in">
+                            <div class="user-avatar" id="userAvatar">
+                                <!-- 头像或首字母将通过 JS 动态添加 -->
+                            </div>
+                            <div class="user-menu">
+                                <a href="profile.html">个人中心</a>
+                                <div class="divider"></div>
+                                <a href="#" onclick="logout()">退出登录</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="navigation_bar">
+                <h2 class="section-title">热门推荐</h2>
+                <div class="main">
+                    <a href="https://wujicloud.cn/voddetail/42265.html">
+                        <img src="images/p1.png" alt="我们的歌">
+                        <p>我们的歌</p>
+                    </a>
+                    <a href="https://wujicloud.cn/voddetail/43534.html">
+                        <img src="images/p2.png" alt="名侦探学院">
+                        <p>名侦探学院</p>
+                    </a>
+                    <a href="https://wujicloud.cn/voddetail/42999.html">
+                        <img src="images/p3.png" alt="我在你的未来吗">
+                        <p>我在你的未来吗</p>
+                    </a>
+                    <a href="https://wujicloud.cn/voddetail/42950.html">
+                        <img src="images/p4.png" alt="大湾仔的夜第二季">
+                        <p>大湾仔的夜第二季</p>
+                    </a>
+                    <a href="https://wujicloud.cn/voddetail/42847.html">
+                        <img src="images/p5.png" alt="再见爱人第二季">
+                        <p>再见爱人第二季</p>
+                    </a>
+                </div>
+            </div>
+
+            <div class="navigation_bar1">
+                <h2 class="section-title">电影频道</h2>
+                <div class="category">
+                    <a href="https://wujicloud.cn/vodshow/6-----------.html">
+                        <p>动作片</p>
+                    </a>
+                    <a href="https://wujicloud.cn/vodshow/7-----------.html">
+                        <p>喜剧片</p>
+                    </a>
+                    <a href="https://wujicloud.cn/vodshow/8-----------.html">
+                        <p>爱情片</p>
+                    </a>
+                    <a href="https://wujicloud.cn/vodshow/9-----------.html">
+                        <p>科幻片</p>
+                    </a>
+                    <a href="https://wujicloud.cn/vodshow/10-----------.html">
+                        <p>恐怖片</p>
+                    </a>
+                </div>
+                <div class="main1">
+                    <a href="https://wujicloud.cn/voddetail/43694.html">
+                        <img src="images/p6.png" alt="世纪虫">
+                        <p>世纪虫</p>
+                    </a>
+                    <a href="https://wujicloud.cn/voddetail/43693.html">
+                        <img src="images/p7.png" alt="我的遗憾和你有关">
+                        <p>我的遗憾和你有关</p>
+                    </a>
+                    <a href="https://wujicloud.cn/voddetail/43690.html">
+                        <img src="images/p8.png" alt="分贝">
+                        <p>分贝</p>
+                    </a>
+                    <a href="https://wujicloud.cn/voddetail/28589.html">
+                        <img src="images/p9.png" alt="坏家伙们2019">
+                        <p>坏家伙们2019</p>
+                    </a>
+                    <a href="https://wujicloud.cn/voddetail/28588.html">
+                        <img src="images/p10.png" alt="白头山">
+                        <p>白头山</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    // 检查登录状态并更新界面
+    function checkLoginStatus() {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        const loggedInElements = document.querySelectorAll('.logged-in');
+        const notLoggedInElements = document.querySelectorAll('.not-logged-in');
+        
+        if (currentUser) {
+            // 用户已登录
+            loggedInElements.forEach(el => el.style.display = 'flex');  // 改为 flex 显示
+            notLoggedInElements.forEach(el => el.style.display = 'none');
+            
+            // 获取完整用户信息
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.username === currentUser.username);
+            
+            // 设置头像
+            const userAvatar = document.getElementById('userAvatar');
+            if (user?.avatar) {
+                userAvatar.style.backgroundImage = `url(${user.avatar})`;
+                userAvatar.textContent = '';
+            } else {
+                userAvatar.style.backgroundImage = '';
+                userAvatar.textContent = (user?.nickname || currentUser.username)[0].toUpperCase();
+            }
+        } else {
+            // 用户未登录
+            loggedInElements.forEach(el => el.style.display = 'none');
+            notLoggedInElements.forEach(el => el.style.display = 'block');
+        }
+    }
+
+    // 退出登录
+    function logout() {
+        localStorage.removeItem('currentUser');
+        window.location.href = 'login.html';
+    }
+
+    // 页面加载时检查登录状态
+    document.addEventListener('DOMContentLoaded', checkLoginStatus);
+</script>
+</html>

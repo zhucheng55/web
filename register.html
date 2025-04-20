@@ -1,0 +1,269 @@
+<!-- file:d:\桌面\朱成毕设\web\register.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册</title>
+    <!-- 引入 Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <!-- 自定义样式 -->
+    <style>
+        body {
+            background-color: #f9f9f9;
+            font-family: Arial, sans-serif;
+        }
+        .register-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .register-box {
+            width: 100%;
+            max-width: 1000px;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex; /* 新增：使两侧内容水平排列 */
+        }
+        .register-form {
+            padding: 40px;
+            flex: 2; /* 左侧占 2/3 宽度 */
+        }
+        .register-info {
+            background-color: #7cb342;
+            color: #fff;
+            padding: 40px;
+            text-align: center;
+            flex: 1; /* 右侧占 1/3 宽度 */
+        }
+        .form-group input {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .btn-primary {
+            background-color: #7cb342;
+            border-color: #7cb342;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .btn-outline-primary {
+            background-color: transparent;
+            border-color: #fff;
+            color: #fff;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .message {
+            margin-top: 10px;
+            color: red;
+        }
+        /* 响应式设计：小屏幕设备上两侧堆叠 */
+        @media (max-width: 768px) {
+            .register-box {
+                flex-direction: column; /* 垂直排列 */
+            }
+            .register-form,
+            .register-info {
+                flex: 1; /* 每侧占满整行 */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 注册容器 -->
+    <div class="register-container">
+        <div class="register-box">
+            <!-- 注册表单 -->
+            <div class="register-form">
+                <h1>创建账号</h1>
+                <p class="subtitle">加入我们，开始您的观影之旅</p>
+                <form id="registerForm" action="/user/addUser" method="post">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="用户名" name="username" id="username" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" placeholder="密码" name="password" id="password" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="手机号" name="phone" id="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" placeholder="邮箱" name="email" id="email" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">注册</button>
+                    <p id="msg" class="message"></p>
+                </form>
+            </div>
+
+            <!-- 登录提示 -->
+            <div class="register-info">
+                <h2>已有账号？</h2>
+                <p>立即登录，继续您的观影体验</p>
+                <a href="login.html" class="btn btn-outline-primary">登录</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入 jQuery 和 Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 表单提交验证
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // 阻止默认表单提交
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+
+            if (!username || !password || !phone || !email) {
+                document.getElementById('msg').textContent = '请填写所有必填项';
+                return;
+            }
+
+            // 验证用户名是否已存在
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            if (users.some(user => user.username === username)) {
+                document.getElementById('msg').textContent = '用户名已存在';
+                return;
+            }
+
+            // 验证手机号格式
+            if (!/^1[3-9]\d{9}$/.test(phone)) {
+                document.getElementById('msg').textContent = '请输入正确的手机号';
+                return;
+            }
+
+            // 验证邮箱格式
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                document.getElementById('msg').textContent = '请输入正确的邮箱地址';
+                return;
+            }
+
+            try {
+                // 保存用户数据
+                const newUser = {
+                    username,
+                    password,
+                    phone,
+                    email,
+                    registerTime: new Date().toISOString()
+                };
+                
+                users.push(newUser);
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                // 显示成功消息
+                document.getElementById('msg').textContent = '注册成功，正在跳转...';
+                document.getElementById('msg').style.color = 'green';
+                
+                // 延迟跳转到登录页面
+                setTimeout(function() {
+                    window.location.href = 'login.html';
+                }, 1500);
+                
+            } catch (error) {
+                console.error('保存数据时出错:', error);
+                document.getElementById('msg').textContent = '注册失败，请重试';
+            }
+        });
+
+        // 添加实时验证
+        document.getElementById('username').addEventListener('blur', function() {
+            const username = this.value;
+            if (username) {
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                if (users.some(user => user.username === username)) {
+                    document.getElementById('msg').textContent = '用户名已存在';
+                } else {
+                    document.getElementById('msg').textContent = '';
+                }
+            }
+        });
+
+        document.getElementById('phone').addEventListener('input', function() {
+            const phone = this.value;
+            if (phone && !/^1[3-9]\d{9}$/.test(phone)) {
+                document.getElementById('msg').textContent = '请输入正确的手机号';
+            } else {
+                document.getElementById('msg').textContent = '';
+            }
+        });
+
+        document.getElementById('email').addEventListener('input', function() {
+            const email = this.value;
+            if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                document.getElementById('msg').textContent = '请输入正确的邮箱地址';
+            } else {
+                document.getElementById('msg').textContent = '';
+            }
+        });
+
+        function validateForm() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message');
+
+            // 检查用户名是否已存在
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            if (users.some(user => user.username === username)) {
+                message.textContent = '用户名已存在';
+                return false;
+            }
+
+            // 检查手机号是否已存在
+            if (users.some(user => user.phone === phone)) {
+                message.textContent = '该手机号已被注册';
+                return false;
+            }
+
+            // 检查邮箱是否已存在
+            if (users.some(user => user.email === email)) {
+                message.textContent = '该邮箱已被注册';
+                return false;
+            }
+
+            // 检查密码是否一致
+            if (password !== confirmPassword) {
+                message.textContent = '两次输入的密码不一致';
+                return false;
+            }
+
+            // 检查密码长度
+            if (password.length < 6) {
+                message.textContent = '密码长度不能少于6位';
+                return false;
+            }
+
+            // 检查手机号格式
+            const phoneRegex = /^1[3-9]\d{9}$/;
+            if (!phoneRegex.test(phone)) {
+                message.textContent = '请输入正确的手机号';
+                return false;
+            }
+
+            // 检查邮箱格式
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                message.textContent = '请输入正确的邮箱地址';
+                return false;
+            }
+
+            message.textContent = '';
+            return true;
+        }
+    </script>
+</body>
+</html>
